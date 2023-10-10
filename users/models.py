@@ -11,6 +11,7 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = 'profile'
 
-class Meta:
-    db_table = 'profile'
+
