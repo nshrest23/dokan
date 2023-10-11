@@ -2,11 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def NewProduct(request):
+def newProduct(request):
     return render(request, template_name="new-product.html")
 
-def Product(request, product_id):
+def product(request, product_id):
     return render(request, template_name="product.html")
 
-def WishList(request):
+def wishList(request):
     return render(request, template_name="wishlist.html")

@@ -2,11 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def Cart(request):
+def cart(request):
     return render(request, template_name="cart.html")
 
-def Checkout(request):
+def checkout(request):
     return render(request, template_name="checkout.html")
 
-def Order(request):
+def order(request):
     return render(request, template_name="order.html")

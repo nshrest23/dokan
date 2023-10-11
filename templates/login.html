@@ -14,17 +14,26 @@
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
   
-                  <form> 
+                  <form action = "{% url 'login_page' %}" method = "post" enctype = "multipart/form-data" class = "mx-1 mx-md-4"> 
                     <div class="d-flex align-items-center mb-3 pb-1">
                       <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                       <span class="h1 fw-bold mb-0">Logo</span>
                     </div> 
                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-
+                    <ul class="messages">
+                    {% if messages %}
+                      {% for message in messages %}
+                      <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                    </ul>
+                  
                     {% csrf_token %}
                     {% for field in form %}
                     <div class="form-group">
-                      <label class="col-sm-4 control-label" for="{{ field.name }}">{{ field.label }} </label>
+                      <label class="col-sm-4 control-label" for="{{ field.name }}"></label>      
                       <div class="col-sm-12">
                         {{ field }}
                       </div>
@@ -33,7 +42,7 @@
                     </br>
                 
                     <div class="pt-1 mb-4">
-                      <button class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                      <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                     </div> 
                     <a class="small text-muted" href="#!">Forgot password?</a>
                     <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{% url 'register_page' %}"
