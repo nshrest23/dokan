@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from users.forms import UserLoginForm, UserRegisterForm
 from django.contrib import messages
 from users.models import User, Profile
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
     return render(request, template_name="index.html")
 
-def login(request):
+def user_login(request):
     form = UserLoginForm()
     if request.method == "POST":
         form_data = UserLoginForm(request.POST)
@@ -22,8 +23,9 @@ def login(request):
                 error = "User doesnot exists!"
                 messages.error(request, error)
                 return redirect("/login")
-            is_valid_user = authenticate(username=check_user[0].username, password=password)
-            if is_valid_user:
+            valid_user = authenticate(request, username=check_user[0].username, password=password)
+            if valid_user:
+                login(request, valid_user)
                 return redirect("/profile")
             else:
                 error = "Invalid Credentials!"
@@ -71,10 +73,21 @@ def register(request):
     
     return render(request, "register.html", {"form": form})
 
-def profile(request):
-    return render(request, template_name="profile.html")
+@login_required
+def user_profile(request):
+    uid = request.user.pk
+    profile = Profile.objects.get(user_id=uid)
+    context = {"profile": profile}
+    return render(request, "profile.html", context)
 
+@login_required
 def editprofile(request):
-    return render(request, template_name="edit-profile.html")
+    uid = request.user.pk
+    profile = Profile.objects.get(user_id=uid)
+    context = {"profile": profile}
+    return render(request, "edit-profile.html", context)
 
+def user_logout(request):
+    logout(request)
+    return redirect("/login")
 

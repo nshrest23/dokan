@@ -39,6 +39,7 @@ class LoginForm(forms.ModelForm):
             "username": '',
             "password": '',
         }
+        
 
 class UserLoginForm(forms.Form):
     username = forms.CharField(
