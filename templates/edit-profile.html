@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
 <div class="container-xl px-4 mt-4">
     <hr class="mt-0 mb-4">
-    <div class="row">
+    <form action = "{% url 'editprofile_page' %}" method = "post" enctype = "multipart/form-data">
+    {% csrf_token %}
+    <div class="row">       
         <div class="col-lg-4">
             <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
                 <div class="card-header text-center"><h5>Profile Picture</h5></div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="rounded-circle img-fluid" style="width: 150px;" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar">
+                    {% if profile.profile_pic == "N/A" %}
+                    <img class="rounded-circle img-fluid" style="width: 150px;" src="https://i.pinimg.com/736x/bb/e3/02/bbe302ed8d905165577c638e908cec76.jpg" alt="avatar">
+                    {% else %}
+                    <img src="{{ profile.profile_pic }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                    {% endif %}
                     <!-- Profile picture help block-->
                     <div><br></div>
                     <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                    <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button">Upload new image</button>
+                    <button class="btn btn-primary" type="button">
+                        <span class="btn btn-primary"></span>
+                        <input type="file" name="profile_pic" id="file_upload" />
+                      </button>
+                    <!-- Profile picture upload button
+                    <div>
+                        <label for="files" class="btn btn-primary">Upload Picture</label>
+                        <input id="files" style="display:none" type="file" name="profile_pic"></input>
+                    </div>
+                -->
+                    <!-- <input class="btn btn-primary" name="profile_pic" type="file"></input> -->
                 </div>
             </div>
         </div>
@@ -24,7 +40,7 @@
             <div class="card mb-4">
                 <div class="card-header text-center"><h5>Account Details</h5></div>
                 <div class="card-body">
-                    <form>
+                    
                         <!-- Form Group (username)-->
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
@@ -50,12 +66,12 @@
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputOrgName">Address</label>
-                                <input class="form-control" id="inputOrgName" type="text" value="{{ profile.address }}">
+                                <input class="form-control" id="inputOrgName" type="text" name="address" value="{{ profile.address }}">
                             </div>
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">City</label>
-                                <input class="form-control" id="inputLocation" type="text" value="{{ profile.city }}">
+                                <input class="form-control" id="inputLocation" type="text" name="city" value="{{ profile.city }}">
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
@@ -70,22 +86,22 @@
                             <!-- Form Group (phone number)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" type="tel" value="{{ profile.phone }}">
+                                <input class="form-control" id="inputPhone" type="tel" name="phone" value="{{ profile.phone }}">
                             </div>
                         </div>
                         <div><br></div>
                         <div class="row gx-3 mb-3">
                         <!-- Save changes button-->
                             <div class="d-flex justify-content-center mb-2">
-                                <button class="btn btn-primary" type="button">Save changes</button>
+                                <button class="btn btn-primary" type="submit">Save changes</button>
                             </div>
                         </div>
             
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </div>
 
 {% endblock %}

@@ -4,10 +4,15 @@ from django.contrib import messages
 from users.models import User, Profile
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from users.helper import save_file
+from products.models import Product
 
 # Create your views here.
 def home(request):
-    return render(request, template_name="index.html")
+    products = Product.objects.all()
+    context = {"products": products}
+
+    return render(request, "index.html", context)
 
 def user_login(request):
     form = UserLoginForm()
@@ -25,6 +30,7 @@ def user_login(request):
                 return redirect("/login")
             valid_user = authenticate(request, username=check_user[0].username, password=password)
             if valid_user:
+                request.session["name"] = valid_user.first_name
                 login(request, valid_user)
                 return redirect("/profile")
             else:
@@ -84,6 +90,26 @@ def user_profile(request):
 def editprofile(request):
     uid = request.user.pk
     profile = Profile.objects.get(user_id=uid)
+
+    if request.method == "POST":
+        address = request.POST.get("address")
+        city = request.POST.get("city")
+        phone = request.POST.get("phone")
+        profile_pic = request.FILES.get("profile_pic")
+        profile_pic_url = save_file(request, profile_pic)
+        #print("City: ", city, "Address: ", address, "Phone: ", phone, "Profile_Pic: ", profile_pic_url)
+        if city != profile.city:
+            profile.city = city
+        if address != profile.address:
+            profile.address = address
+        if phone != profile.phone:
+            profile.phone = phone
+        if profile_pic_url is not None:
+            if profile_pic_url != profile.profile_pic:
+                profile.profile_pic = profile_pic_url
+        profile.save()
+        return redirect("/profile")
+
     context = {"profile": profile}
     return render(request, "edit-profile.html", context)
 
