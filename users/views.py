@@ -97,7 +97,6 @@ def editprofile(request):
         phone = request.POST.get("phone")
         profile_pic = request.FILES.get("profile_pic")
         profile_pic_url = save_file(request, profile_pic)
-        #print("City: ", city, "Address: ", address, "Phone: ", phone, "Profile_Pic: ", profile_pic_url)
         if city != profile.city:
             profile.city = city
         if address != profile.address:
