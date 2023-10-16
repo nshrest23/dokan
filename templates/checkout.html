@@ -8,39 +8,6 @@
           <!-- Checkout -->
           <div class="card shadow-0 border">
             <div class="p-4">
-              <h5 class="card-title mb-3">Guest checkout</h5>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <p class="mb-0">First name</p>
-                  <div class="form-outline">
-                    <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                  </div>
-                </div>
-  
-                <div class="col-6">
-                  <p class="mb-0">Last name</p>
-                  <div class="form-outline">
-                    <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                  </div>
-                </div>
-  
-                <div class="col-6 mb-3">
-                  <p class="mb-0">Phone</p>
-                  <div class="form-outline">
-                    <input type="tel" id="typePhone" value="+48 " class="form-control" />
-                  </div>
-                </div>
-  
-                <div class="col-6 mb-3">
-                  <p class="mb-0">Email</p>
-                  <div class="form-outline">
-                    <input type="email" id="typeEmail" placeholder="example@gmail.com" class="form-control" />
-                  </div>
-                </div>
-              </div>
-  
-              <hr class="my-4" />
-  
               <h5 class="card-title mb-3">Shipping info</h5>
   
               <div class="row mb-3">
@@ -143,21 +110,25 @@
           <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
             <h6 class="mb-3">Summary</h6>
             <div class="d-flex justify-content-between">
-              <p class="mb-2">Total price:</p>
-              <p class="mb-2">$195.90</p>
+              <p class="mb-2">Cart Total:</p>
+              <p class="mb-2 fw-bold">${{ cart_total }}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">TAX:</p>
+              <p class="mb-2 fw-bold">+ ${{ tax_total }}</p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">Discount:</p>
-              <p class="mb-2 text-danger">- $60.00</p>
+              <p class="mb-2 fw-bold text-danger">- $00.00</p>
             </div>
             <div class="d-flex justify-content-between">
-              <p class="mb-2">Shipping cost:</p>
-              <p class="mb-2">+ $14.00</p>
+              <p class="mb-2">Shipping Cost:</p>
+              <p class="mb-2 fw-bold">+ $00.00</p>
             </div>
             <hr />
             <div class="d-flex justify-content-between">
-              <p class="mb-2">Total price:</p>
-              <p class="mb-2 fw-bold">$149.90</p>
+              <p class="mb-2">Grand Total:</p>
+              <p class="mb-2 fw-bold">${{ grand_total }}</p>
             </div>
   
             <div class="input-group mt-3 mb-4">
@@ -167,53 +138,26 @@
   
             <hr />
             <h6 class="text-dark my-4">Items in cart</h6>
-  
+            {% for c in carts %}
             <div class="d-flex align-items-center mb-4">
               <div class="me-3 position-relative">
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                  1
+                  {{ c.quantity }}
                 </span>
-                <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/7.webp" style="height: 96px; width: 96x;" class="img-sm rounded border" />
+                <img src="{{ c.product.product_img }}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
               </div>
               <div class="">
-                <a href="#" class="nav-link">
-                  Gaming Headset with Mic <br />
-                  Darkblue color
+                <a href="{% url 'product_page' product_id=c.product.pk %}" class="nav-link">
+                  {{ c.product.title }} <br />
+                  {{ c.product.category }}
                 </a>
-                <div class="price text-muted">Total: $295.99</div>
+                <div class="price  text-primary ms-2">Total: ${{ c.total|floatformat:2 }}</div>
               </div>
             </div>
-  
-            <div class="d-flex align-items-center mb-4">
-              <div class="me-3 position-relative">
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                  1
-                </span>
-                <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/5.webp" style="height: 96px; width: 96x;" class="img-sm rounded border" />
-              </div>
-              <div class="">
-                <a href="#" class="nav-link">
-                  Apple Watch Series 4 Space <br />
-                  Large size
-                </a>
-                <div class="price text-muted">Total: $217.99</div>
-              </div>
-            </div>
-  
-            <div class="d-flex align-items-center mb-4">
-              <div class="me-3 position-relative">
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                  3
-                </span>
-                <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/1.webp" style="height: 96px; width: 96x;" class="img-sm rounded border" />
-              </div>
-              <div class="">
-                <a href="#" class="nav-link">GoPro HERO6 4K Action Camera - Black</a>
-                <div class="price text-muted">Total: $910.00</div>
-              </div>
-            </div>
+            {% endfor %}
+
           </div>
-        </div>
+        </div> 
       </div>
     </div>
   </section>

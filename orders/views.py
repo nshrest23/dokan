@@ -26,24 +26,30 @@ def add_cart(request, product_id):
     cart_data = {
         "user": request.user,
         "product": product,
-        "quantity": product.quantity,
+        "quantity": 1,
         "total": product.price,
     }
     check_cart = Cart.objects.filter(user_id=request.user.pk, product_id=product_id)
-    if check_cart:
-        pass
-
-    Cart.objects.create(**cart_data)
+    if check_cart.exists():
+        cart = check_cart.first()
+        cart.quantity = cart.quantity + 1
+        cart.total = cart.quantity * product.price
+        if product.quantity >= cart.quantity:
+            cart.save()
+    else:
+        Cart.objects.create(**cart_data)
     return redirect("/cart")
 
 @login_required
-def update_cart(request, cart_id, qty):
+def update_cart(request, cart_id):
     cart = Cart.objects.get(pk=cart_id)
-    cart.quantity = qty
-    cart.save()
+    if request.method == "POST":
+        qty = request.POST.get("qty")
+        cart.quantity = qty
+        cart.total = int(qty) * cart.product.price
+        if cart.product.quantity >= int(qty):
+            cart.save()           
     return redirect("/cart")
-    
-
 
 @login_required
 def delete_cart(request, cart_id):
@@ -53,7 +59,14 @@ def delete_cart(request, cart_id):
 
 #@login_required
 def checkout(request):
-    return render(request, template_name="checkout.html")
+    carts = Cart.objects.filter(user=request.user.pk)
+    cart_total = sum([cart.total for cart in carts])
+    tax_total = cart_total * 0.13
+    discount = 0
+    shipping_cost = 0
+    grand_total = cart_total + tax_total + shipping_cost - discount
+    context = {"carts": carts, "cart_total": cart_total, "tax_total": tax_total, "discount": discount, "shipping_cost": shipping_cost, "grand_total": grand_total }
+    return render(request, "checkout.html", context)
 
 #@login_required
 def order(request):
