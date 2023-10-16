@@ -29,6 +29,10 @@ def add_cart(request, product_id):
         "quantity": product.quantity,
         "total": product.price,
     }
+    check_cart = Cart.objects.filter(user_id=request.user.pk, product_id=product_id)
+    if check_cart:
+        pass
+
     Cart.objects.create(**cart_data)
     return redirect("/cart")
 

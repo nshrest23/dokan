@@ -34,7 +34,7 @@
                   4.5
                 </span>
               </div>
-              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>{{ product.quantity }} orders</span>
+              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>{{ product.quantity }} left</span>
               <span class="text-success ms-2">In stock</span>
             </div>
   
@@ -48,12 +48,6 @@
   
             <hr />
               <!-- col.// -->
-              <div class="col-md-4 col-6 mb-3">
-                <label class="mb-2 d-block">Quantity</label>
-                <div class="input-group mb-3" style="width: 170px;">
-                  <input class="btn btn-white border border-secondary" type="number" id="button-addon1" data-mdb-ripple-color="dark" min="1" value="1" />
-                </div>
-              </div>
             </div>
             <a href="{% url 'checkout_page' %}" class="btn btn-warning shadow-0"> Buy now </a>
             <a href="{% url 'addcart_page' product_id=product.id %}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
