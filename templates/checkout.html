@@ -141,17 +141,17 @@
             {% for c in carts %}
             <div class="d-flex align-items-center mb-4">
               <div class="me-3 position-relative">
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill badge-secondary fw-bold">
                   {{ c.quantity }}
                 </span>
                 <img src="{{ c.product.product_img }}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
               </div>
               <div class="">
-                <a href="{% url 'product_page' product_id=c.product.pk %}" class="nav-link">
+                <a href="{% url 'product_page' product_id=c.product.pk %}" class="nav-link fw-bold">
                   {{ c.product.title }} <br />
-                  {{ c.product.category }}
+                  <span class="text-muted">{{ c.product.category }}</span>
                 </a>
-                <div class="price  text-primary ms-2">Total: ${{ c.total|floatformat:2 }}</div>
+                <div class="price fw-bold text-primary ms-2">Total: ${{ c.total|floatformat:2 }}</div>
               </div>
             </div>
             {% endfor %}
