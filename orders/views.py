@@ -171,7 +171,6 @@ def order(request):
                 status_code = 100
             elif status == "cancelled":
                 status_code = 0
-            
     context = {"orders": orders, "has_order": has_order}   
     return render(request, "order.html", context)
 
@@ -181,5 +180,27 @@ def thanks(request):
     return render(request, "thankyou.html")
 
 @login_required
-def invoice(request):
-    return render(request, "invoice.html")
+def invoice(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    profile = Profile.objects.get(user_id=request.user.pk)
+    invoice_detail = {
+        "products": order.products,
+        "fname": request.user.first_name,
+        "lname": request.user.last_name,
+        "email": request.user.email,
+        "phone": profile.phone,
+        "address": order.address,
+        "city": order.city,
+        "date": order.created_at,
+        "subtotal": order.total,
+        "discount": order.discount,
+        "vat_amount": order.vat_amount,
+        "shipping_type": order.shipping_type,
+        "shipping_cost": order.shipping_cost,
+        "grand_total": order.grand_total,
+        "invoice_id": order.invoice_id,
+        "payment_method": order.payment_method,
+    }
+    context = {"invoice_detail": invoice_detail}
+    print(context)
+    return render(request, "invoice.html", context)

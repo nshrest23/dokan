@@ -115,7 +115,7 @@
                 <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> ${{ o.shipping_cost }}</p>
               </div>
               <div class="d-flex justify-content-between mb-1">
-                <p class="text-muted mb-0"></p>
+                <p class="text-muted mb-0 fw-bold"><a href="{% url 'invoice_page' order_id=o.pk %}">View Invoice</p></a>
                 <p class="text-muted mb-0"><span class="fw-bold me-4">Payment Method</span> {{ o.payment_method }}</p>
               </div>
             </div>
@@ -123,8 +123,7 @@
               style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
               <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
                 paid: <span class="h2 mb-0 ms-2">${{ o.grand_total|floatformat:2 }}</span></h5>
-            </div>
-            
+            </div>            
            </div>
         </div>
       </div>
