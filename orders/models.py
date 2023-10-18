@@ -21,6 +21,8 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.JSONField()
     total = models.FloatField(default=0)
+    shipping_type = models.CharField(max_length=50, default="SELF_PICKUP")
+    discount = models.FloatField(default=0)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     info = models.CharField(max_length=100)
@@ -33,4 +35,4 @@ class Order(models.Model):
         verbose_name_plural = 'order'
     
     def __str__(self):
-     return self.id
+     return self.pk

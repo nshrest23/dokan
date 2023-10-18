@@ -133,3 +133,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login'
 
+SHIPPING_CHARGE = {
+    "EXPRESS": 19.99,
+    "POST_OFFICE": 4.99,
+    "SELF_PICKUP": 0,
+}
+
+COUPON_CODE = {
+    "OFFER": 10,
+    "DASHAIN_OFFER": 50,
+}
+
