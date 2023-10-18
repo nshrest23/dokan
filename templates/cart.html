@@ -26,27 +26,27 @@
                   </div>
                 </div>
                 <div class="col-lg-1 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                <form action = "#" method = "post" enctype = "multipart/form-data"> 
-                  {% csrf_token %}
-                  <div class="">
-                  <div class="input-group mb-1" style="width: 170px;">
-                    <input class="btn btn-white border border-secondary" type="number" id="button-addon1" data-mdb-ripple-color="dark" min="1" max="{{ c.product.quantity }}" name="qty" value="{{ c.quantity }}" />
+                  <form action = "{% url 'updatecart_page' cart_id=c.pk %}" method = "post" enctype = "multipart/form-data"> 
+                    {% csrf_token %}
+                    <div class="">
+                    <div class="input-group mb-1" style="width: 170px;">
+                      <input class="btn btn-white border border-secondary" type="number" id="button-addon1" data-mdb-ripple-color="dark" min="1" max="{{ c.product.quantity }}" name="qty" value="{{ c.quantity }}" />
+                    </div>
+                      <text class="h6">SubTotal: ${{ c.total|floatformat:2  }}</text> <br />
+                      <small class="text-muted text-nowrap">Item Price: ${{ c.product.price|floatformat:2  }}</small>
+                    </div>
+                  
                   </div>
-                    <text class="h6">SubTotal: ${{ c.total|floatformat:2  }}</text> <br />
-                    <small class="text-muted text-nowrap">Item Price: ${{ c.product.price|floatformat:2  }}</small>
+                  <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                    <div class="float-md-end">
+                      <a class="btn btn-light border px-2 icon-hover-primary"><i class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
+                      <button type="submit" class="btn btn-light border text-primary icon-hover-danger"> Update</a></button>
+                    </div>
+                    <div class="float-md-end">
+                      <a href="{% url 'deletecart_page' cart_id=c.pk %}" class="btn btn-light border text-danger icon-hover-danger"> Remove</a>
+                    </div>
                   </div>
-                
-                </div>
-                <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                  <div class="float-md-end">
-                    <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                    <button type="submit" class="btn btn-light border text-primary icon-hover-danger"> Update</a></button>
-                  </div>
-                  <div class="float-md-end">
-                    <a href="{% url 'deletecart_page' cart_id=c.pk %}" class="btn btn-light border text-danger icon-hover-danger"> Remove</a>
-                  </div>
-                </div>
-                </form>
+                  </form>
               </div>
               {% endfor %}
             </div>
