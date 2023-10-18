@@ -42,7 +42,7 @@ def add_cart(request, product_id):
             cart.save()
     else:
         Cart.objects.create(**cart_data)
-    return redirect("/cart")
+    return redirect("/")
 
 @login_required
 def update_cart(request, cart_id):
@@ -131,6 +131,14 @@ def purchase(request):
             "status": "processing",
         }
         Order.objects.create(**order_details)
+        # update products inventory
+        products = request.session["order_details"]["products"]
+        for p in products:
+            product = Product.objects.get(id=p["product_id"])
+            qty = product.quantity
+            product.quantity = qty - p["product_qty"]
+            product.save()
+
         # delete cart & delete session
         Cart.objects.filter(user_id=request.user.pk).delete()
         del request.session["order_details"]
@@ -142,31 +150,36 @@ def purchase(request):
 @login_required
 def order(request):
     orders = Order.objects.filter(user_id=request.user.pk).order_by("-created_at")
-    
-    ordered_products = []
-    created_at = None
-    status_code = 0
-    for o in orders:
-        product = o.products
-        ordered_products.extend(product)
-        total = o.total
-        created_at = o.created_at
-        
-        status = o.status
-        if status == "processing":
-            status_code = 25
-        elif status == "shipped":
-            status_code = 50
-        elif status == "out_for_delivery":
-            status_code = 75
-        elif status == "delivered":
-            status_code = 100
-        elif status == "cancelled":
-            status_code = 0
-
-        context = {"orders": orders}
+    has_order = len(orders) > 0
+    if orders.exists():
+        ordered_products = []
+        created_at = None
+        status_code = 0
+        for o in orders:
+            product = o.products
+            ordered_products.extend(product)
+            total = o.total
+            created_at = o.created_at           
+            status = o.status
+            if status == "processing":
+                status_code = 25
+            elif status == "shipped":
+                status_code = 50
+            elif status == "out_for_delivery":
+                status_code = 75
+            elif status == "delivered":
+                status_code = 100
+            elif status == "cancelled":
+                status_code = 0
+            
+    context = {"orders": orders, "has_order": has_order}   
     return render(request, "order.html", context)
+
 
 @login_required
 def thanks(request):
     return render(request, "thankyou.html")
+
+@login_required
+def invoice(request):
+    return render(request, "invoice.html")

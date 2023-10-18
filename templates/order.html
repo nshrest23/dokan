@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="h-100 gradient-custom">
+{% if has_order %}
+<section class="card h-100 gradient-custom">
   <div class="container py-2 h-100 align-items-center">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-10 col-xl-8">
-        <div class="card align-items-center" style="border-radius: 5px;">
+      <div class="col-lg-10 col-xl-8 card>
+        <div class="align-items-center" style="border-radius: 5px;">
           <div class="card-header px-4 py-5">
-            <h5 class="text-muted mb-0 ">Thanks for your Order, <span style="color: #a8729a;">{{ request.user.first_name }}</span>!</h5>
+            <h5 class="text-muted mb-0 text-center">Thanks for your Order, <span style="color: #a8729a;">{{ request.user.first_name }}</span>!</h5>
           </div>
         </div>
       </div>
@@ -129,5 +130,20 @@
       </div>
     </div>
   {% endfor %}
-  </section>
+</section>
+{% else %}
+<section class="h-100 gradient-custom">
+  <div class="container py-2 h-100 align-items-center">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card align-items-center" style="border-radius: 5px;">
+          <div class="card-header px-4 py-5">
+            <h3 class="mb-4 fw-bold text-danger align-items-center text-center">No Orders Yet! </h3><p class="text-center fw-bold text-secondary align-items-center">Please order & re-visit later.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
 {% endblock %}
