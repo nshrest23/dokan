@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="bg-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 col-lg-8 mb-4">
+          <form action = "#" method = "post" enctype = "multipart/form-data"> 
+            {% csrf_token %}
+          <!-- Checkout -->
+          <div class="card shadow-0 border">
+            <div class="p-4">
+              <h5 class="card-title mb-3">Shipping info</h5>
+              <div class="row mb-3">
+              
+                <div class="col-lg-4 mb-3">
+                  <!-- Default checked radio -->
+                  <div class="form-check h-100 border rounded-3">
+                    <div class="p-3">
+                      <input class="form-check-input" type="radio" name="shipping_type" id="flexRadioDefault1" value="EXPRESS" checked />
+                      <label class="form-check-label" for="flexRadioDefault1">
+                        Express delivery <br />
+                        <small class="text-muted">3-4 days via Fedex </small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-3">
+                  <!-- Default radio -->
+                  <div class="form-check h-100 border rounded-3">
+                    <div class="p-3">
+                      <input class="form-check-input" type="radio" name="shipping_type" id="flexRadioDefault2" value="POST_OFFICE" />
+                      <label class="form-check-label" for="flexRadioDefault2">
+                        Post office <br />
+                        <small class="text-muted">20-30 days via post </small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-3">
+                  <!-- Default radio -->
+                  <div class="form-check h-100 border rounded-3">
+                    <div class="p-3">
+                      <input class="form-check-input" type="radio" name="shipping_type" id="flexRadioDefault3" value="SELF_PICKUP"/>
+                      <label class="form-check-label" for="flexRadioDefault3">
+                        Self pick-up <br />
+                        <small class="text-muted">Come to our shop </small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+  
+              <div class="row">
+                <div class="col-sm-8 mb-3">
+                  <p class="mb-0">Address</p>
+                  <div class="">
+                    <input type="text" name="address" id="typeText" placeholder="Enter Address" class="form-control" value="{{ profile.address }}"/>
+                  </div>
+                </div>
+  
+                <div class="col-sm-4 mb-3">
+                  <p class="mb-0">City</p>
+                  <div class="">
+                    <input type="text" name="city" id="typeText" class="form-control" />
+                  </div>
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <p class="mb-0">Message to seller</p>
+                <div class="">
+                  <textarea class="form-control" name="info" id="textAreaExample1" rows="2"></textarea>
+                </div>
+              </div>
+              <div class="col-sm-4 mb-3">
+                <input type="text" class="form-control border" name="coupon" placeholder="Coupon code"/>
+              </div>
+  
+              <div class="float-end">
+                <button class="btn btn-light border">Cancel</button>
+                <button href="{% url 'purchase_page' %}" type="submit" class="btn btn-success shadow-0 border">Continue</button>
+              </div>
+            </div>
+          </div>
+          </form>
+
+          <!-- Checkout -->
+        </div>
+        <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+          <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+            <h6 class="mb-3">Summary</h6>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Cart Total:</p>
+              <p class="mb-2 fw-bold">${{ cart_total }}</p>
+            </div>
+  
+            
+  
+            <hr />
+            <h6 class="text-dark my-4">Items in cart</h6>
+            {% for c in carts %}
+            <div class="d-flex align-items-center mb-4">
+              <div class="me-3 position-relative">
+                <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill badge-secondary fw-bold">
+                  {{ c.quantity }}
+                </span>
+                <img src="{{ c.product.product_img }}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
+              </div>
+              <div class="">
+                <a href="{% url 'product_page' product_id=c.product.pk %}" class="nav-link fw-bold">
+                  {{ c.product.title }} <br />
+                  <span class="text-muted">{{ c.product.category }}</span>
+                </a>
+                <div class="price fw-bold text-primary ms-2">Total: ${{ c.total|floatformat:2 }}</div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </div> 
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-8 col-lg-8 mb-4">
+        <!-- Checkout -->
+        <div class="card shadow-0 border">
+          <div class="p-4">
+          <h5 class="card-title mb-3">Summary</h5>
+          <hr />
+          <div class="d-flex justify-content-between">
+            <p class="mb-2">Total price:</p>
+            <p class="mb-2">${{order_details.cart_total|floatformat:2}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="mb-2">VAT (13%):</p>
+            <p class="mb-2">${{order_details.vat_amount | floatformat:2}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="mb-2">Discount:</p>
+            <p class="mb-2 text-danger">${{order_details.discount|floatformat:2}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="mb-2">Shipping cost:</p>
+            <p class="mb-2">${{order_details.shipping_cost}}</p>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between">
+            <p class="mb-2">Grand Total:</p>
+            <p class="mb-2 fw-bold">${{order_details.grand_total | floatformat:2}}</p>
+          </div>
+          <hr />
+          <form action="{% url 'purchase_page'%}" enctype="multipart/form-data" method="post"> 
+            {% csrf_token %}
+          <div class="input-group mt-3 mb-4 justify-content-center justify-content-lg-center">
+            <button type="submit" class="btn btn-light text-primary border">Buy Now</button>
+          </div> 
+        </form>        
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+        <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+          <h5 class="card-title mb-3">Cart Info</h5>
+            {% for p in order_details.products %}
+            <div class="d-flex align-items-center mb-4">
+              <div class="me-3 position-relative">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                  {{ p.product_qty }}
+                </span>
+                <img src="{{ p.product_img }}" style="height: 96px; width: 96x;" class="img-sm rounded border" />
+              </div>
+              <div class="">
+                <a href="{% url 'product_page' product_id=p.product_id %}" class="nav-link">
+                  {{ p.title }} <br />
+                </a>
+                <div class="price text-muted">Total: ${{ p.total }}</div>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
