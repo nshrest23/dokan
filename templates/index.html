@@ -26,6 +26,63 @@
       <header class="mb-4">
         <h3>New products</h3>
       </header>
+
+      <footer class="text-center text-lg-start text-muted mt-3" style="background-color: #f5f5f5;">
+        <!-- Section: Links  -->
+        <section class="">
+          <div class="container text-center text-md-start pt-1 pb-1">
+            <!-- Grid row -->
+            <div class="row mt-3">
+              <!-- Grid column -->
+              <div class="col-6 col-sm-4 col-lg-2">
+                <!-- Links -->
+                <h6 class="text-uppercase text-dark fw-bold mb-2">
+                  Sort By
+                </h6>
+              </div>
+              <!-- Grid column -->
+      
+              <!-- Grid column -->
+              <div class="col-6 col-sm-4 col-lg-2">
+                <!-- Links -->
+                <h6 class="text-uppercase text-dark fw-bold mb-2">
+                  <a href="?sort_by=price"> Price (low-to-high)</a>
+                </h6>
+              </div>
+              <!-- Grid column -->
+      
+              <!-- Grid column -->
+              <div class="col-6 col-sm-4 col-lg-2">
+                <!-- Links -->
+                <h6 class="text-uppercase text-dark fw-bold mb-2">
+                  <a href="?sort_by=-price"> Price (high-to-low)</a>
+                </h6>
+              </div>
+              <!-- Grid column -->
+      
+              <!-- Grid column -->
+              <div class="col-6 col-sm-4 col-lg-2">
+                <!-- Links -->
+                <h6 class="text-uppercase text-dark fw-bold mb-2">
+                  <a href="?sort_by=-created_at"> Latest Products</a>
+                </h6>
+              </div>
+              <!-- Grid column -->
+      
+              <!-- Grid column -->
+              <div class="col-6 col-sm-4 col-lg-2">
+                <!-- Links -->
+                <h6 class="text-uppercase text-dark fw-bold mb-2">
+                  <a href="#"> Popularity</a>
+                </h6>
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+          </div>
+        </section>
+        <!-- Section: Links  -->
+      </footer>
   
       <div class="row">
         {% for p in products %}
@@ -55,6 +112,32 @@
       </div>
     </div>
   </section>
+
+  
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo;</a>
+        </li>
+        {% if products.has_previous %}
+            <a class="page-link" href="?page={{ products.previous_page_number }}">previous</a>
+        {% endif %}
+      </li>
+      {% for page in products.paginator.page_range %}
+      <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+      {% endfor %}
+      <li class="page-item">
+        {% if products.has_next %}
+            <a class="page-link" href="?page={{ products.next_page_number }}">next</a>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ products.paginator.num_pages }}">&raquo;</a>
+        </li>
+      </li>
+    </ul>
+  </nav>
   <!-- Products -->
 
   
