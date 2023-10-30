@@ -6,11 +6,17 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from users.helper import save_file
 from products.models import Product
+from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
-    products = Product.objects.all()
-    context = {"products": products}
+    sort = request.GET.get('sort_by', 'created_at')
+    products = Product.objects.all().order_by(sort)
+    page_size = request.GET.get("per_page", 8)
+    paginator = Paginator(products, page_size)  # Show 8 products per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {"products": page_obj}
 
     return render(request, "index.html", context)
 
