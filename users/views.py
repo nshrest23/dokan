@@ -10,8 +10,15 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
-    sort = request.GET.get('sort_by', 'created_at')
-    products = Product.objects.all().order_by(sort)
+    sort = request.GET.get('sort_by')
+    if sort: 
+        request.session["sort_by"] = sort
+    sort = request.session.get("sort_by", '-created_at')
+    query = request.GET.get("query", None)
+    if query:
+        products = Product.objects.filter(title__icontains=query).order_by(sort)
+    else:
+        products = Product.objects.all().order_by(sort)
     page_size = request.GET.get("per_page", 8)
     paginator = Paginator(products, page_size)  # Show 8 products per page.
     page_number = request.GET.get("page")
@@ -111,7 +118,7 @@ def editprofile(request):
             profile.phone = phone
         if profile_pic_url is not None:
             if profile_pic_url != profile.profile_pic:
-                profile.profile_pic = profile_pic_url
+                profile.profile_pic = profile_pic_urls
         profile.save()
         return redirect("/profile")
 
