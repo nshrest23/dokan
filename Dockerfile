@@ -20,4 +20,4 @@ EXPOSE 8000
 
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-CMD ["gunicorn", "-w 3", "-t 4", "dokak.wsgi"]
+CMD ["gunicorn", "-w 3", "-t 4", "dokan.wsgi:application", "--error-logfile", "/var/tmp/error.log", "--access-logfile", "/var/tmp/access.log", "--bind", "0.0.0.0:8000"]
